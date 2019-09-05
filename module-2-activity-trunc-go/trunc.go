@@ -5,8 +5,12 @@ import (
 )
 
 func main() {
-	x := 123.456789
-	fmt.Printf("%.0f\n", x)
-	y := 12345.6789
-	fmt.Printf("%.0f\n", y)
+	var num float64
+	fmt.Println("Please enter a floating point number.")
+	fmt.Scan(&num)
+	fmt.Printf("first: %.0f\n", num)
+
+	fmt.Println("Please enter a floating point number.")
+	fmt.Scan(&num)
+	fmt.Printf("second: %.0f\n", num)
 }
