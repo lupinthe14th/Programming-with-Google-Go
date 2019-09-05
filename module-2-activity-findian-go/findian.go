@@ -5,20 +5,17 @@ import (
 	"strings"
 )
 
-func findian(s string) {
-	if strings.ContainsAny(s, "ian") {
-		fmt.Println("Found!")
-	} else {
-		fmt.Println("Not Found!")
+func findian(s string) string {
+	ls := strings.ToLower(s)
+	if strings.HasPrefix(ls, "i") && strings.Contains(ls, "a") && strings.HasSuffix(ls, "n") {
+		return "Found!"
 	}
+	return "Not Found!"
 }
 
 func main() {
-	var found, notFound string
-	fmt.Println("Please enter a string containing the characters 'i', 'a', and 'n'.")
-	fmt.Scan(&found)
-	findian(found)
-	fmt.Println("Please enter a string not containing the characters 'i', 'a', and 'n'.")
-	fmt.Scan(&notFound)
-	findian(notFound)
+	var s string
+	fmt.Printf("Please enter your string for processing: ")
+	fmt.Scan(&s)
+	fmt.Println(findian(s))
 }
