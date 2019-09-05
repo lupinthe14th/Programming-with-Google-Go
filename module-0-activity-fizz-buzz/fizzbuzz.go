@@ -5,17 +5,18 @@ import (
 	"math"
 	"os"
 	"os/signal"
+	"strconv"
 )
 
-func fizzBuzz(num int) {
+func fizzBuzz(num int) string {
 	if math.Mod(float64(num), 3) == 0 && math.Mod(float64(num), 5) == 0 {
-		fmt.Println("FizzBuzz")
+		return "FizzBuzz"
 	} else if math.Mod(float64(num), 3) == 0 {
-		fmt.Println("Fizz")
+		return "Fizz"
 	} else if math.Mod(float64(num), 5) == 0 {
-		fmt.Println("Buzz")
+		return "Buzz"
 	} else {
-		fmt.Println(num)
+		return strconv.Itoa(num)
 	}
 }
 
@@ -25,7 +26,7 @@ func main() {
 			var x int
 			fmt.Println("Please enter a intager or Ctr-c")
 			fmt.Scan(&x)
-			fizzBuzz(x)
+			fmt.Println(fizzBuzz(x))
 		}
 	}()
 
