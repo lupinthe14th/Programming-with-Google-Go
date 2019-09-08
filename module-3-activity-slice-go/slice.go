@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"os/signal"
 	"sort"
+	"strconv"
 )
 
-var numList []int
+var numList = make([]int, 3)
 
-func slice(n int) []int {
-	numList = append(numList, n)
-	sort.Ints(numList)
+func add(i, n int) []int {
+	if i <= 2 {
+		numList[i] = n
+	} else {
+		numList = append(numList, n)
+	}
 	return numList
 }
 
@@ -27,22 +29,22 @@ func IsContains(nl []int, n int) bool {
 }
 
 func main() {
-	go func() {
-		for {
-			var num int
-			fmt.Print("Please entering distinct integers: ")
-			fmt.Scan(&num)
-			if !IsContains(numList, num) {
-				nl := slice(num)
-				if len(nl) > 2 {
-					fmt.Println(nl)
-				}
-			}
+	i := 0
+	for {
+		var s string
+		fmt.Print("Please entering distinct integers: ")
+		fmt.Scan(&s)
+		if s == "X" {
+			break
 		}
-	}()
-
-	fmt.Println("wont exit enter Ctr-c")
-	done := make(chan os.Signal, 1)
-	signal.Notify(done, os.Interrupt)
-	<-done
+		num, _ := strconv.Atoi(s)
+		if !IsContains(numList, num) {
+			nl := add(i, num)
+			if i >= 2 {
+				sort.Ints(nl)
+				fmt.Println(nl)
+			}
+			i++
+		}
+	}
 }
