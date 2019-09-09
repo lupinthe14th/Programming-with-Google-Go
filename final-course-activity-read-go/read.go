@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
 type User struct {
@@ -26,7 +27,6 @@ func main() {
 	defer fp.Close()
 
 	reader := bufio.NewReaderSize(fp, 41)
-	var tmp []byte
 	var users []User
 	for {
 		line, isPrefix, err := reader.ReadLine()
@@ -36,10 +36,9 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		tmp = append(tmp, line...)
-		log.Print(string(tmp))
+		lines := strings.Split(string(line), " ")
 		if !isPrefix {
-			users = append(users, User{Fname: string(tmp[0]), Lname: string(tmp[1])})
+			users = append(users, User{Fname: lines[0], Lname: lines[1]})
 		}
 	}
 
