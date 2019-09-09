@@ -18,6 +18,6 @@ func main() {
 		"name":    name.Text(),
 		"address": address.Text(),
 	}
-	blob, _ := json.Marshal(user)
-	fmt.Println(string(blob))
+	barr, _ := json.Marshal(user)
+	fmt.Println(string(barr))
 }
