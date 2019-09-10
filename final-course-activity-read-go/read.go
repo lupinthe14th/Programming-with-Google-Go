@@ -8,13 +8,11 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	"gopkg.in/go-playground/validator.v9"
 )
 
 type Person struct {
-	Fname string `json:"fname" validate:"max=20"`
-	Lname string `json:"lname" validate:"max=20"`
+	Fname string `json:"fname"`
+	Lname string `json:"lname"`
 }
 
 func main() {
@@ -22,15 +20,14 @@ func main() {
 	fmt.Print("Please enter input file name:")
 	fmt.Scan(&input)
 	log.Print(input)
-	fp, err := os.Open(input)
+	fd, err := os.Open(input)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer fp.Close()
+	defer fd.Close()
 
-	reader := bufio.NewReaderSize(fp, 1024)
+	reader := bufio.NewReaderSize(fd, 1024)
 	var persons []Person
-	validate := validator.New()
 	for {
 		line, isPrefix, err := reader.ReadLine()
 		if err == io.EOF {
@@ -42,9 +39,9 @@ func main() {
 		lines := strings.Split(string(line), " ")
 		if !isPrefix {
 			p := Person{Fname: lines[0], Lname: lines[1]}
-			if err := validate.Struct(p); err != nil {
+			if len(p.Fname) > 20 || len(p.Lname) > 20 {
+				err := fmt.Sprintf("Error: over size 20 characters: %+v", p)
 				log.Print(err)
-				log.Printf("person: %+v", p)
 				continue
 			}
 			persons = append(persons, p)
