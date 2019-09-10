@@ -8,11 +8,13 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"gopkg.in/go-playground/validator.v9"
 )
 
-type User struct {
-	Fname string `json:"fname"`
-	Lname string `json:"lname"`
+type Person struct {
+	Fname string `json:"fname" validate:"max=20"`
+	Lname string `json:"lname" validate:"max=20"`
 }
 
 func main() {
@@ -26,8 +28,9 @@ func main() {
 	}
 	defer fp.Close()
 
-	reader := bufio.NewReaderSize(fp, 41)
-	var users []User
+	reader := bufio.NewReaderSize(fp, 1024)
+	var persons []Person
+	validate := validator.New()
 	for {
 		line, isPrefix, err := reader.ReadLine()
 		if err == io.EOF {
@@ -38,13 +41,19 @@ func main() {
 		}
 		lines := strings.Split(string(line), " ")
 		if !isPrefix {
-			users = append(users, User{Fname: lines[0], Lname: lines[1]})
+			p := Person{Fname: lines[0], Lname: lines[1]}
+			if err := validate.Struct(p); err != nil {
+				log.Print(err)
+				log.Printf("person: %+v", p)
+				continue
+			}
+			persons = append(persons, p)
 		}
 	}
 
-	u, err := json.Marshal(&users)
+	p, err := json.Marshal(&persons)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf(string(u))
+	fmt.Printf(string(p))
 }
