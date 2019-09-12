@@ -2,16 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 )
 
 func fizzBuzz(num uint64) string {
 	fizz := num % 3
-	log.Print(fizz)
 	buzz := num % 5
-	log.Print(buzz)
 	if fizz == 0 && buzz == 0 {
 		return "FizzBuzz"
 	} else if fizz == 0 {
