@@ -6,7 +6,7 @@ import (
 )
 
 var cases = []struct {
-	input int
+	input uint64
 	want  string
 }{
 	{input: 1, want: "1"},
@@ -39,6 +39,6 @@ func TestFizzBuzz(t *testing.T) {
 
 func BenchmarkFizzBuzz(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		fizzBuzz(i)
+		fizzBuzz(uint64(i))
 	}
 }
