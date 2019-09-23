@@ -7,8 +7,8 @@ import (
 
 // BubbleSort function is modify the slice so that the elements in sorted order.
 func BubbleSort(num []int) {
-	for i := 0; i < len(num)-1; i++ {
-		for j := 0; j < len(num)-i-1; j++ {
+	for i := len(num); i > 0; i-- {
+		for j := 0; j < i-1; j++ {
 			for num[j] > num[j+1] {
 				Swap(num, j)
 			}
