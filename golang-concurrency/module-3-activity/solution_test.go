@@ -53,7 +53,19 @@ func Example_main() {
 
 	os.Stdin = orgStdin
 
-	// Output: [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]
+	// Unordered output:
+	// NOTE:
+	// 1. All (including last) integers should be delimited by space
+	// 2. Total count of integers should be divisible by 4
+	// Enter sequence of integers:
+	// >
+	// Four sorted slices are as follows:
+	// [12 4 2 13]
+	// [10 0 3 11]
+	// [7 5 15 1]
+	// [9 14 6 8]
+	// Sorted integer sequence is as follows:
+	// [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]
 }
 
 func TestCheckError(t *testing.T) {

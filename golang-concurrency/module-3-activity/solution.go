@@ -11,6 +11,7 @@ import (
 )
 
 func sub(nums []int, c chan []int) {
+	fmt.Println(nums)
 	sort.Ints(nums)
 	c <- nums
 }
@@ -18,6 +19,7 @@ func sub(nums []int, c chan []int) {
 func sortRecord(nums []int) []int {
 	var ans []int
 	var d int
+	fmt.Println("Four sorted slices are as follows:")
 	l := len(nums)
 	d = l / 4
 	c := make(chan []int, 4)
@@ -40,6 +42,11 @@ func sortRecordN(nums []int) []int {
 }
 
 func main() {
+	fmt.Println("NOTE:")
+	fmt.Println("1. All (including last) integers should be delimited by space")
+	fmt.Println("2. Total count of integers should be divisible by 4")
+	fmt.Println("Enter sequence of integers:")
+	fmt.Println(">")
 	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 
 	nTemp := strings.Split(readLine(reader), " ")
@@ -51,7 +58,9 @@ func main() {
 		checkError(err)
 		nums = append(nums, int(n))
 	}
-	fmt.Println(sortRecord(nums))
+	ans := sortRecord(nums)
+	fmt.Println("Sorted integer sequence is as follows:")
+	fmt.Println(ans)
 }
 
 func readLine(r *bufio.Reader) string {
