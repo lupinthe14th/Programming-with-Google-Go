@@ -17,6 +17,7 @@ type Case struct {
 var cases = []Case{
 	{input: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, want: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}},
 	{input: []int{12, 4, 2, 13, 10, 0, 3, 11, 7, 5, 15, 1, 9, 14, 6, 8}, want: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}},
+	{input: []int{12, 4, 2, 13, 10, 0, 3, 11, 7, 5, 15, 1, 9, 14, 6, 8, 16, 17, 18, 19}, want: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}},
 }
 
 func TestSortRecord(t *testing.T) {
@@ -40,6 +41,7 @@ func TestSortRecordN(t *testing.T) {
 		})
 	}
 }
+
 func Example_main() {
 	c, _ := ioutil.ReadFile("./input.csv")
 	inr, inw, _ := os.Pipe()

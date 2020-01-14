@@ -17,7 +17,6 @@ func sub(nums []int, c chan []int) {
 }
 
 func sortRecord(nums []int) []int {
-	var ans []int
 	var d int
 	fmt.Println("Four sorted slices are as follows:")
 	l := len(nums)
@@ -28,17 +27,41 @@ func sortRecord(nums []int) []int {
 	go sub(nums[2*d:3*d], c)
 	go sub(nums[3*d:l], c)
 
-	for i := 0; i < 4; i++ {
-		tmp := <-c
-		ans = append(ans, tmp...)
-	}
-	sort.Ints(ans)
-	return ans
+	return merge(merge(<-c, <-c), merge(<-c, <-c))
 }
 
 func sortRecordN(nums []int) []int {
 	sort.Ints(nums)
 	return nums
+}
+
+func merge(a, b []int) []int {
+	ans := make([]int, len(a)+len(b))
+
+	var i, j int = 0, 0
+
+	for i < len(a) && j < len(b) {
+		if a[i] <= b[j] {
+			ans[i+j] = a[i]
+			i++
+		} else {
+			ans[i+j] = b[j]
+			j++
+		}
+	}
+
+	for i < len(a) {
+		ans[i+j] = a[i]
+		i++
+
+	}
+	for j < len(b) {
+		ans[i+j] = b[j]
+		j++
+	}
+
+	return ans
+
 }
 
 func main() {
