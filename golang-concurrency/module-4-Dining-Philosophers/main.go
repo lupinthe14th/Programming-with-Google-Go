@@ -1,4 +1,3 @@
-// Refarence: http://rosettacode.org/wiki/Dining_philosophers#Mutexes_and_WaitGroup
 package main
 
 import (
@@ -17,11 +16,10 @@ type Philo struct {
 	leftCS, rightCS *ChopS
 }
 
-// In order to eat, a philosopher must get permission from a host which executes in its own goroutine.
-var wg sync.WaitGroup
-
 // Philosopher Eat Method
-func (p Philo) eat() {
+func (p Philo) eat(sem chan struct{}) {
+	sem <- struct{}{}
+	defer func() { <-sem }()
 	for i := 0; i < 3; i++ {
 		p.leftCS.Lock()
 		p.rightCS.Lock()
@@ -32,26 +30,29 @@ func (p Philo) eat() {
 		p.rightCS.Unlock()
 		p.leftCS.Unlock()
 	}
-	wg.Done()
 }
 
 func main() {
 	// Initialization
-	wg.Add(2) // The host allows no more than 2 philosophers to eat concurrently.
-	CStick0 := new(ChopS)
-	CStickLeft := CStick0
-	philos := make([]*Philo, 5)
-	for i := 1; i < 5; i++ {
-		CStickRight := new(ChopS)
-		philos[i] = &Philo{i + 1, CStickLeft, CStickRight}
-		CStickLeft = CStickRight
+	CSticks := make([]*ChopS, 5)
+	for i := 0; i < 5; i++ {
+		CSticks[i] = new(ChopS)
 	}
-	philos[0] = &Philo{1, CStick0, CStickLeft}
+	philos := make([]*Philo, 5)
+	for i := 0; i < 5; i++ {
+		philos[i] = &Philo{i + 1, CSticks[i], CSticks[(i+1)%5]}
+	}
 
+	sem := make(chan struct{}, 2)
+
+	var wg sync.WaitGroup
 	// Start the Dining
 	for i := 0; i < 5; i++ {
-		go philos[i].eat()
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			philos[i].eat(sem)
+		}(i)
 	}
 	wg.Wait()
-
 }
